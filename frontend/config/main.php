@@ -45,6 +45,9 @@ return [
                 'news/<url>' => 'news/show',
             ],
         ],
+
+
+
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',

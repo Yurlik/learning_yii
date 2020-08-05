@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use yii\helpers\Url;
+
 
 /* @var $this yii\web\View */
 /* @var $model common\models\News */
@@ -46,13 +48,19 @@ $this->params['breadcrumbs'][] = $this->title;
 //                }
 //            ],
             [
-                'attribute'=>'image',
-                'value'=> ('@uploads/'.$model->image),
+                'attribute'=>'photo',
+                'value'=>Yii::$app->urlManagerBackend->baseUrl.'/'.$model->image,
                 'format' => ['image',['width'=>'100','height'=>'auto']],
             ],
             'created_at',
             'seourl:ntext',
         ],
     ]) ?>
+
+    <?php
+
+    echo Html::img(Yii::$app->urlManagerBackend->baseUrl.'/'.$model->image);
+
+    ?>
 
 </div>

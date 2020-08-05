@@ -52,6 +52,14 @@ return [
             'rules' => [
             ],
         ],
+
+        'urlManagerBackend' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => 'http://learning/uploads',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
+
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
