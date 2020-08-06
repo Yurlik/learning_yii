@@ -77,5 +77,11 @@ class News extends \yii\db\ActiveRecord
         return false;
     }
 
+    public static function getPopNews($days, $limit){
+        $time = time() - 86400*$days;
+        return self::find()->where(['status' => 1])->andWhere('created_at > '.$time.'')->orderBy(['uniq_reader_counter'=>SORT_DESC ])->asArray()->limit($limit)->all();
+    }
+
+
 
 }

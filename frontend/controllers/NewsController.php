@@ -11,6 +11,7 @@ namespace frontend\controllers;
 use Yii;
 use common\models\News;
 use common\models\NewsSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,19 +39,19 @@ class NewsController extends Controller
      */
     public function actionIndex()
     {
-//        $searchModel = new NewsSearch();
+        $searchModel = new NewsSearch();
 //        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
-        $news = News::find()->all();
-
-
-        return $this->render('index', [
-           'news' => $news,
+        $dataProvider = new ActiveDataProvider([
+            'query' => News::find()->where(['status'=>1])->orderBy('id DESC'),
+            'pagination' => [
+                'pageSize' => 5,
+            ],
         ]);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
 
     }
 
