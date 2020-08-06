@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'text:ntext',
             'status',
+            'tagsAsString',
 //            'image',
 //            [
 //                'attribute'=>'image',
@@ -59,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
 
-    echo Html::img(Yii::$app->urlManagerBackend->baseUrl.'/'.$model->image);
+    //echo Html::img(Yii::$app->urlManagerBackend->baseUrl.'/'.$model->image);
 
     ?>
 

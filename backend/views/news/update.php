@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use kartik\select2\Select2;
 /* @var $this yii\web\View */
 /* @var $model common\models\News */
 
@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'data' => $data,
     ]) ?>
 
 </div>
+

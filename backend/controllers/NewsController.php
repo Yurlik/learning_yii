@@ -2,12 +2,14 @@
 
 namespace backend\controllers;
 
+use common\models\Tag;
 use Yii;
 use common\models\News;
 use common\models\NewsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * NewsController implements the CRUD actions for News model.
@@ -94,9 +96,12 @@ class NewsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        $arr = Tag::find()->asArray()->all();
+        $data = ArrayHelper::map($arr, 'id', 'tag_name');
 
         return $this->render('update', [
             'model' => $model,
+            'data' => $data,
         ]);
     }
 
@@ -123,7 +128,8 @@ class NewsController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = News::findOne($id)) !== null) {
+        if (($model = News::find()->with('tags')->andWhere(['id'=>$id])->one()) !== null) {
+//        if (($model = News::findOne($id)) !== null) {
             return $model;
         }
 

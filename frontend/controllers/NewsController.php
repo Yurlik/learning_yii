@@ -136,7 +136,7 @@ class NewsController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = News::findOne($id)) !== null) {
+        if (($model = News::find()->with('tags')->andWhere(['id'=>$id])->one()) !== null) {
             return $model;
         }
 
