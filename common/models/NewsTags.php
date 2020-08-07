@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "news_tags".
@@ -68,4 +70,18 @@ class NewsTags extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Tag::className(), ['id' => 'tag_id']);
     }
+
+    /*
+     * Most popular tags
+     */
+
+    public static function getMostPopTags($limit)
+    {
+
+        $subQuery = (new Query())->select(['*'])->from('tag');
+        $tags_names = (new Query())->select(['tag_name'])->from('news_tags')->leftJoin(['u' => $subQuery], 'u.id = tag_id')->groupBy('tag_id')->orderBy('COUNT(*) DESC')->limit($limit)->all();
+
+        return $tags_names;
+    }
+
 }

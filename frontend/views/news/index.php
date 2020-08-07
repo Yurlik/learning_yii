@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use frontend\widgets\PopWidget;
+use frontend\widgets\PopTagsWidget;
 use yii\widgets\ListView;
 /* @var $this yii\web\View */
 
@@ -33,7 +34,13 @@ $this->title = 'My Yii Application';
                         ]
                     );
                 ?>
-
+               <?php
+                echo PopTagsWidget::widget(
+                        [
+                                'limit' => 3,
+                        ]
+                )
+               ?>
             </div>
         </div>
 

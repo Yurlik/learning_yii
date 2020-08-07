@@ -62,6 +62,7 @@ class News extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'seourl' => 'Seourl',
             'tags_array' => 'Tags',
+            'tagsAsString' => 'Tags',
         ];
     }
 
