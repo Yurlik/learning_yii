@@ -69,7 +69,7 @@ class News extends \yii\db\ActiveRecord
     public function upload()
     {
         $this->image = UploadedFile::getInstance($this, 'image');
-//var_dump($this->image);die;
+
         if(($this->image)){
             $image_file_name = rand(0, 9999).'.'.$this->image->getExtension();
 

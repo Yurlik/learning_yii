@@ -70,14 +70,20 @@ class NewsController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->created_at = time();
-
+            if($model->description == ''){
+                $model->description = substr($model->text, 0, 20) . '...';
+            }
             $model->upload();
             $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $arr = Tag::find()->asArray()->all();
+        $data = ArrayHelper::map($arr, 'id', 'tag_name');
+
         return $this->render('create', [
             'model' => $model,
+            'data' => $data,
         ]);
 
     }
@@ -92,8 +98,15 @@ class NewsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $exist_img = $model->image;
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            if(!$model->upload()){
+                $model->image = $exist_img;
+            }
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
         $arr = Tag::find()->asArray()->all();

@@ -68,7 +68,7 @@ if (extension_loaded('gd')) {
  * Adjust requirements according to your application specifics.
  */
 $requirements = array(
-    // Database :
+    // DatabaseController :
     array(
         'name' => 'PDO extension',
         'mandatory' => true,

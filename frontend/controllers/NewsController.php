@@ -15,6 +15,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\NewsComments;
+use common\models\UniqNewsVisitors;
 
 class NewsController extends Controller
 {
@@ -57,8 +59,33 @@ class NewsController extends Controller
 
     public function actionShow($url){
         $new = News::find()->where(['seourl'=>$url])->one();
+
+        /*uniq clients*/
+        $client_agent = Yii::$app->request->getUserAgent();
+        $client_ip = Yii::$app->request->getUserIP();
+        $as_visit = UniqNewsVisitors::find()->where(['client_agent'=>$client_agent])->andWhere(['client_ip'=>$client_ip])->andWhere(['news_id'=>$new->id])->count();
+
+        if($as_visit == 0){
+
+            News::updateAll(['uniq_reader_counter'=>$new->uniq_reader_counter+1], ['id'=>$new->id]);
+            $visit = new UniqNewsVisitors();
+            $visit->news_id = $new->id;
+            $visit->client_ip = $client_ip;
+            $visit->client_agent = $client_agent;
+            $visit->save();
+        }
+        /*comments*/
+
+        $comment = new NewsComments();
+
+        $comments = NewsComments::find()->where(['news_id'=>$new->id])->orderBy(['id' => SORT_DESC ])->all();
+
+
         return $this->render('show', [
             'new' => $new,
+            'comments' => $comments,
+            'comment' => $comment,
+
         ]);
     }
 

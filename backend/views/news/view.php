@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>Yii::$app->urlManagerBackend->baseUrl.'/'.$model->image,
                 'format' => ['image',['width'=>'100','height'=>'auto']],
             ],
-            'created_at',
+            'created_at:datetime',
             'seourl:ntext',
         ],
     ]) ?>
