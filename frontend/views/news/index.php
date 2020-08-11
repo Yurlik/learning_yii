@@ -15,6 +15,11 @@ $this->title = 'My Yii Application';
 
         <div class="row">
             <div class="col-lg-8">
+                <?php if(Yii::$app->user->can('createNews')) :   ?>
+                    <p>
+                        <?= Html::a('Create News', ['create'], ['class' => 'btn btn-success']) ?>
+                    </p>
+                <?php endif; ?>
                 <?=ListView::widget([
                     'dataProvider' => $dataProvider,
                     'itemView' => '_news_item',

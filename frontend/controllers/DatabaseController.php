@@ -50,8 +50,10 @@ class DatabaseController extends Controller
         ob_start();
         try
         {
+
             $output = Array();
             exec(__DIR__ . '/../../yii migrate --interactive=0', $output);
+//            exec('php -v', $output);
             echo implode("\n", $output);
         }
         catch(\Exception $ex)

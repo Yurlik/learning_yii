@@ -17,6 +17,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\NewsComments;
 use common\models\UniqNewsVisitors;
+use common\models\Tag;
+use backend\controllers\TagController;
+use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 
 class NewsController extends Controller
 {
@@ -26,6 +30,18 @@ class NewsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create'],
+                'rules' => [
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['createNews'],
+                    ],
+
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -107,17 +123,47 @@ class NewsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+//    public function actionCreate()
+//    {
+//        $model = new News();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        }
+//
+//        return $this->render('create', [
+//            'model' => $model,
+//        ]);
+//    }
+
     public function actionCreate()
     {
+
         $model = new News();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->created_at = time();
+            if($model->description == ''){
+                $model->description = substr($model->text, 0, 20) . '...';
+            }
+            if(!Yii::$app->user->can('admin')){
+                $model->status = 0;
+            }
+            $model->upload();
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+
+
+        $arr = Tag::find()->asArray()->all();
+        $data = ArrayHelper::map($arr, 'id', 'tag_name');
+
         return $this->render('create', [
             'model' => $model,
+            'data' => $data,
         ]);
+
     }
 
     /**
