@@ -69,8 +69,55 @@ class NewsController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
 
 
+    public function actionMynews()
+    {
+//        var_dump(Yii::$app->user->id);die;
+        $searchModel = new NewsSearch();
+//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => News::find()->where(['status'=>[0, 2]])->andWhere(['author_id'=>Yii::$app->user->id])->orderBy('id DESC'),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+        return $this->render('mynews', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionToCheck($id)
+    {
+        if($model = News::find()->where(['id'=>$id])->one()) {
+            $model::updateAll(['status' => 2], ['id'=>$id]);
+        }
+        return true;
+    }
+    public function actionFromCheck($id)
+    {
+        if($model = News::find()->where(['id'=>$id])->one()) {
+            $model::updateAll(['status' => 0], ['id'=>$id]);
+
+        }
+        return true;
+    }
+
+    public function actionNewsForCheck(){
+        $searchModel = new NewsSearch();
+//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => News::find()->where(['status'=>[2]])->orderBy('id DESC'),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+        return $this->render('mynews', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function actionShow($url){
@@ -142,6 +189,7 @@ class NewsController extends Controller
         $model = new News();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->author_id = Yii::$app->user->id;
             $model->created_at = time();
             if($model->description == ''){
                 $model->description = substr($model->text, 0, 20) . '...';
@@ -151,7 +199,7 @@ class NewsController extends Controller
             }
             $model->upload();
             $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['mynews']);
         }
 
 

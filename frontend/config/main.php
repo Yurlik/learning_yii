@@ -42,6 +42,9 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'news/create' => 'news/create',
+                'news/mynews' => 'news/mynews',
+                'news/to-check' => 'news/to-check',
+                'news/from-check' => 'news/from-check',
                 'news/index' => 'news/index',
                 'news/<url>' => 'news/show',
             ],
