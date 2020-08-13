@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
 //use backend\components\Controller;
 use Yii;
@@ -34,5 +34,5 @@ class MigrateController extends Controller
     }
 
 
-
+    
 }

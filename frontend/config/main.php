@@ -43,6 +43,7 @@ return [
             'rules' => [
                 'news/create' => 'news/create',
                 'news/mynews' => 'news/mynews',
+                'news/news-for-check' => 'news/news-for-check',
                 'news/to-check' => 'news/to-check',
                 'news/from-check' => 'news/from-check',
                 'news/index' => 'news/index',

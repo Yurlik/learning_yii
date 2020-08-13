@@ -38,12 +38,15 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'News', 'url' => ['/news/index']],
-        ['label' => 'My News', 'url' => ['/news/mynews']],
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
     ];
+
+    if (!Yii::$app->user->isGuest) {
+        $menuItems[] = ['label' => 'My News', 'url' => ['/news/mynews']];
+    }
     if(Yii::$app->user->can('admin')){
-        $menuItems[] = ['label' => 'NewsToCheck', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'NewsToCheck', 'url' => ['/news/news-for-check']];
     }
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];

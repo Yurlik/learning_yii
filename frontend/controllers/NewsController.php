@@ -104,7 +104,14 @@ class NewsController extends Controller
         }
         return true;
     }
+    public function actionPublish($id)
+    {
+        if($model = News::find()->where(['id'=>$id])->one()) {
+            $model::updateAll(['status' => 1], ['id'=>$id]);
 
+        }
+        return true;
+    }
     public function actionNewsForCheck(){
         $searchModel = new NewsSearch();
 //        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -114,7 +121,7 @@ class NewsController extends Controller
                 'pageSize' => 10,
             ],
         ]);
-        return $this->render('mynews', [
+        return $this->render('news_for_check', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
