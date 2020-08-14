@@ -31,7 +31,7 @@ class NewsController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'view', 'delete'],
                         'allow' => true,
                         'roles' => ['admin'],
                     ],
