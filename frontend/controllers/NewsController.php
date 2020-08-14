@@ -21,6 +21,7 @@ use common\models\Tag;
 use backend\controllers\TagController;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
+use common\models\User;
 
 class NewsController extends Controller
 {
@@ -96,6 +97,7 @@ class NewsController extends Controller
         }
         return true;
     }
+
     public function actionFromCheck($id)
     {
         if($model = News::find()->where(['id'=>$id])->one()) {
@@ -104,14 +106,43 @@ class NewsController extends Controller
         }
         return true;
     }
+
     public function actionPublish($id)
     {
         if($model = News::find()->where(['id'=>$id])->one()) {
             $model::updateAll(['status' => 1], ['id'=>$id]);
 
+            $author = User::find()->where(['id'=>$model->author_id])->one();
+            Yii::$app->mailer->compose()
+                ->setFrom('yuriycheryavski@gmail.com')
+                ->setTo($author->email)
+                ->setSubject('Ваша статья отмодерирована и опубликована')
+                ->setTextBody('Текст сообщения')
+                ->setHtmlBody('Ваша статья "'.$model->title.'" отмодерирована и опубликована')
+                ->send();
+
         }
         return true;
     }
+
+    public function actionDecline($id){
+        if($model = News::find()->where(['id'=>$id])->one()) {
+            $model::updateAll(['status' => 0], ['id' => $id]);
+            $author = User::find()->where(['id' => $model->author_id])->one();
+
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            Yii::$app->mailer->compose()
+                ->setFrom('yuriycheryavski@gmail.com')
+                ->setTo($author->email)
+                ->setSubject('Ваша статья отклонена')
+                ->setTextBody('Текст сообщения')
+                ->setHtmlBody('Ваша статья "' . $model->title . '" отклонена. ' . Yii::$app->request->post('decline_text'))
+                ->send();
+
+        }
+    }
+
     public function actionNewsForCheck(){
         $searchModel = new NewsSearch();
 //        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

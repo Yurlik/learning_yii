@@ -89,7 +89,7 @@ $('form.return').on('beforeSubmit', function(){
             var id = $(this).find('input[name=news_id]').val();
             console.log(id);
         $.ajax({
-            url: '/news/from-check?id='+id,
+            url: '/news/decline?id='+id,
             type: 'POST',
             data: data,
             success: function(data){

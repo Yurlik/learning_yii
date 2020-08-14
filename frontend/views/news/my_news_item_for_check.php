@@ -28,13 +28,16 @@ use yii\widgets\ActiveForm;
     <?= Html::hiddenInput('news_id', $model->id) ?>
     <?= Html::submitButton('Publish', ['class' => 'btn btn-primary']) ?>
     <?php ActiveForm::end();    ?>
-
+<hr>
 <!--    ajax form to send news for recall checking   -->
     <?php $form_from = ActiveForm::begin(['options' => [
         'class'=>'return'
     ]
     ]);?>
     <?= Html::hiddenInput('news_id', $model->id) ?>
+    <p style='margin-bottom:10px;'>
+    <?= Html::textarea('decline_text', 'decline text insert here', ['class' => 'form-control'])?>
+    </p>
     <?= Html::submitButton('Return for revision', ['class' => 'btn btn-warning']) ?>
     <?php ActiveForm::end();    ?>
 
