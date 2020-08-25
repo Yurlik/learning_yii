@@ -61,7 +61,8 @@ class NewsController extends Controller
         $searchModel = new NewsSearch();
 //        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider = new ActiveDataProvider([
-            'query' => News::find()->where(['status'=>1])->orderBy('id DESC'),
+//            'query' => News::find()->where(['status'=>1])->orderBy('id DESC'),
+            'query' => News::find()->active()->orderById(),
             'pagination' => [
                 'pageSize' => 5,
             ],
@@ -79,7 +80,8 @@ class NewsController extends Controller
         $searchModel = new NewsSearch();
 //        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider = new ActiveDataProvider([
-            'query' => News::find()->where(['status'=>[0, 2]])->andWhere(['author_id'=>Yii::$app->user->id])->orderBy('id DESC'),
+//            'query' => News::find()->where(['status'=>[0, 2]])->andWhere(['author_id'=>Yii::$app->user->id])->orderBy('id DESC'),
+            'query' => News::find()->nonactive()->author()->orderById(),
             'pagination' => [
                 'pageSize' => 10,
             ],

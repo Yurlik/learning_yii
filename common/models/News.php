@@ -5,6 +5,8 @@ use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
 
+use common\queries\NewsQueries;
+
 /**
  * This is the model class for table "news".
  *
@@ -128,6 +130,12 @@ class News extends \yii\db\ActiveRecord
     public function getTagsAsString(){
 
         return implode(', ', ArrayHelper::map($this->tags, 'id','tag_name'));
+    }
+
+
+    public static function find()
+    {
+        return new NewsQueries(get_called_class());
     }
 
 }
